@@ -81,12 +81,14 @@ namespace Linklaget
                 if (buf[i-1-x]==(byte)'A')
                 {
                     sendBuf[i] = (byte) 'B';
-                    sendBuf[++i] = (byte) 'C';
+					i++;
+                    sendBuf[i] = (byte) 'C';
                     x++;
                 }else if (buf[i-1-x]==(byte)'B')
                 {
                     sendBuf[i] = (byte) 'B';
-                    sendBuf[++i] = (byte) 'D';
+					i++;
+                    sendBuf[i] = (byte) 'D';
                     x++;
                 }
                 else

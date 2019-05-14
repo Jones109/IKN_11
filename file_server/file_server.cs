@@ -27,7 +27,7 @@ namespace Application
             {
                 try
                 {
-                    byte[] buffer = new byte[10000];
+					byte[] buffer = new byte[BUFSIZE];
                     transport.receive(ref buffer);
                     string fileName = LIB.extractFileName(Encoding.ASCII.GetString(buffer));
                     long fileLength = LIB.check_File_Exists(fileName);
