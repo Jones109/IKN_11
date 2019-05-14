@@ -2,9 +2,9 @@
   <MonoDevelop.Ide.Workbench ActiveDocument="file_client/file_client.cs">
     <Files>
       <File FileName="file_server/file_server.cs" Line="98" Column="59" />
-      <File FileName="Link/Link.cs" Line="144" Column="5" />
-      <File FileName="Transport/Transport.cs" Line="160" Column="54" />
-      <File FileName="file_client/file_client.cs" Line="61" Column="42" />
+      <File FileName="Link/Link.cs" Line="146" Column="18" />
+      <File FileName="Transport/Transport.cs" Line="160" Column="35" />
+      <File FileName="file_client/file_client.cs" Line="4" Column="18" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />

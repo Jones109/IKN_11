@@ -3,3 +3,8 @@
 /root/Desktop/IKN11/Transport/obj/Release/Transport.csprojResolveAssemblyReference.cache
 /root/Desktop/IKN11/Transport/obj/Release/Transport.csproj.CoreCompileInputs.cache
 /root/Desktop/IKN11/Transport/obj/Release/Transport.dll
+/root/Desktop/IKN_11/Transport/bin/Release/Transport.dll
+/root/Desktop/IKN_11/Transport/bin/Release/Link.dll
+/root/Desktop/IKN_11/Transport/obj/Release/Transport.csprojResolveAssemblyReference.cache
+/root/Desktop/IKN_11/Transport/obj/Release/Transport.csproj.CoreCompileInputs.cache
+/root/Desktop/IKN_11/Transport/obj/Release/Transport.dll

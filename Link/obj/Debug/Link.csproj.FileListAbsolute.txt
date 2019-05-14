@@ -12,7 +12,6 @@
 /root/Desktop/IKN11.3/Link/obj/Debug/Link.pdb
 /root/Desktop/IKN_11/Link/bin/Debug/Link.dll
 /root/Desktop/IKN_11/Link/bin/Debug/Link.pdb
-/root/Desktop/IKN_11/Link/obj/Debug/Link.csprojResolveAssemblyReference.cache
 /root/Desktop/IKN_11/Link/obj/Debug/Link.csproj.CoreCompileInputs.cache
 /root/Desktop/IKN_11/Link/obj/Debug/Link.dll
 /root/Desktop/IKN_11/Link/obj/Debug/Link.pdb

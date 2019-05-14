@@ -102,7 +102,15 @@ namespace Transportlaget
                 (ackType ? (byte)buffer[(int)TransCHKSUM.SEQNO] : (byte)(buffer[(int)TransCHKSUM.SEQNO] + 1) % 2); //Send true or false
             ackBuf[(int)TransCHKSUM.TYPE] = (byte)(int)TransType.ACK;
             checksum.calcChecksum(ref ackBuf, (int)TransSize.ACKSIZE);
+
+			if(++errorCount==3){
+				ackBuf[2]++;
+				Console.WriteLine("Støj");
+			}
+
             link.send(ackBuf, (int)TransSize.ACKSIZE);
+
+
         }
 
         /// <summary>
@@ -121,6 +129,12 @@ namespace Transportlaget
             packet[(int)TransCHKSUM.SEQNO] = seqNo;
             packet[(int)TransCHKSUM.TYPE] = 0; //Data 
             checksum.calcChecksum(ref packet, packet.Length); //Calculate checksum
+
+			if (++errorCount == 3)
+            {
+                packet[2]++;
+                Console.WriteLine("Støj");
+            }
 
             //Send data until ack received and correct seq number
             link.send(packet, packet.Length);
