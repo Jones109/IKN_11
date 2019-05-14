@@ -1,0 +1,4 @@
+/root/Desktop/IKN11/Link/bin/Release/Link.dll
+/root/Desktop/IKN11/Link/obj/Release/Link.csproj.CoreCompileInputs.cache
+/root/Desktop/IKN11/Link/obj/Release/Link.dll
+/root/Desktop/IKN11/Link/obj/Release/Link.csprojResolveAssemblyReference.cache

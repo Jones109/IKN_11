@@ -1,0 +1,5 @@
+/root/Desktop/IKN11/LIB/bin/Release/LIB.dll
+/root/Desktop/IKN11/LIB/bin/Release/System.dll
+/root/Desktop/IKN11/LIB/obj/Release/LIB.csprojResolveAssemblyReference.cache
+/root/Desktop/IKN11/LIB/obj/Release/LIB.csproj.CoreCompileInputs.cache
+/root/Desktop/IKN11/LIB/obj/Release/LIB.dll
