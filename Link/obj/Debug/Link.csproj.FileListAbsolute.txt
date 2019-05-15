@@ -15,3 +15,4 @@
 /root/Desktop/IKN_11/Link/obj/Debug/Link.csproj.CoreCompileInputs.cache
 /root/Desktop/IKN_11/Link/obj/Debug/Link.dll
 /root/Desktop/IKN_11/Link/obj/Debug/Link.pdb
+/root/Desktop/IKN_11/Link/obj/Debug/Link.csprojResolveAssemblyReference.cache

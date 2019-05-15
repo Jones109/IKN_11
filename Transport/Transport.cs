@@ -102,12 +102,12 @@ namespace Transportlaget
                 (ackType ? (byte)buffer[(int)TransCHKSUM.SEQNO] : (byte)(buffer[(int)TransCHKSUM.SEQNO] + 1) % 2); //Send true or false
             ackBuf[(int)TransCHKSUM.TYPE] = (byte)(int)TransType.ACK;
             checksum.calcChecksum(ref ackBuf, (int)TransSize.ACKSIZE);
-
+            /*
 			if(++errorCount==3){
 				ackBuf[2]++;
 				Console.WriteLine("Støj");
 			}
-
+*/
             link.send(ackBuf, (int)TransSize.ACKSIZE);
 
 
@@ -132,8 +132,8 @@ namespace Transportlaget
 
 			if (++errorCount == 3)
             {
-                packet[2]++;
-                Console.WriteLine("Støj");
+                packet[1]++;
+                Console.WriteLine("Noise ! byte 1 is spoiled in the third transmission");
             }
 
             //Send data until ack received and correct seq number
@@ -153,7 +153,7 @@ namespace Transportlaget
             }
 
             //reset values
-            errorCount = 0;
+            //errorCount = 0;
         }
 
         /// <summary>
