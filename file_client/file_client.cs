@@ -71,26 +71,37 @@ namespace Application
                 int NoOfPackets = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(fileLength) / Convert.ToDouble(BUFSIZE)));
 
                 int bytesReceived = 0;
-                for (int i = 0; i < NoOfPackets; ++i)
+                for (int i = 0; i < NoOfPackets;)
                 {
                     if ((fileLength - bytesReceived) > BUFSIZE)
                     {
                         byte[] receiveBuffer = new byte[BUFSIZE];
-                        transport.receive(ref receiveBuffer);
-                        Fs.Write(receiveBuffer, 0, receiveBuffer.Length);
-                        bytesReceived += BUFSIZE;
+                        int result = transport.receive(ref receiveBuffer);
+						if(result>0){
+							Fs.Write(receiveBuffer, 0, receiveBuffer.Length);
+                            bytesReceived += BUFSIZE;
+							Console.WriteLine("Received packet no. " + i);
+                            Console.WriteLine("Recieved Bytes: " + bytesReceived);
+							++i;
+						}
+                        
                     }
                     else
                     {
                         byte[] receiveBuffer = new byte[fileLength - bytesReceived];
-                        transport.receive(ref receiveBuffer);
-                        Fs.Write(receiveBuffer, 0, fileLength-bytesReceived);
-                        bytesReceived += receiveBuffer.Length;
+                        int result = transport.receive(ref receiveBuffer);
+						if (result > 0)
+                        {
+							Fs.Write(receiveBuffer, 0, fileLength - bytesReceived);
+                            bytesReceived += receiveBuffer.Length;
+							Console.WriteLine("Received packet no. " + i);
+                            Console.WriteLine("Recieved Bytes: " + bytesReceived);
+							++i;
+                        }
+                        
                     }
-					Console.WriteLine("Received packet no. " + i);
-					Console.WriteLine("Recieved Bytes: " + bytesReceived);
-                }
 
+                }
                 Fs.Close();
                 Console.WriteLine("Done med din lortefil");
             }

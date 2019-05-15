@@ -102,12 +102,12 @@ namespace Transportlaget
                 (ackType ? (byte)buffer[(int)TransCHKSUM.SEQNO] : (byte)(buffer[(int)TransCHKSUM.SEQNO] + 1) % 2); //Send true or false
             ackBuf[(int)TransCHKSUM.TYPE] = (byte)(int)TransType.ACK;
             checksum.calcChecksum(ref ackBuf, (int)TransSize.ACKSIZE);
-            /*
-			if(++errorCount==3){
-				ackBuf[2]++;
-				Console.WriteLine("Støj");
-			}
-*/
+            
+			//if(++errorCount==3){
+			//	ackBuf[1]++;
+			//	Console.WriteLine("Noise ! byte 1 is spoiled in the third Ack transmission");
+			//}
+            
             link.send(ackBuf, (int)TransSize.ACKSIZE);
 
 
@@ -124,36 +124,31 @@ namespace Transportlaget
         /// </param>
         public void send(byte[] buf, int size)
         {
-            byte[] packet = new byte[size + (int)TransSize.ACKSIZE]; //Save space for CS, ACK and type
-            Array.Copy(buf, 0, packet, 4, size);
-            packet[(int)TransCHKSUM.SEQNO] = seqNo;
-            packet[(int)TransCHKSUM.TYPE] = 0; //Data 
-            checksum.calcChecksum(ref packet, packet.Length); //Calculate checksum
+			do
+			{
+                    
+                byte[] packet = new byte[size + (int)TransSize.ACKSIZE]; //Save space for CS, ACK and type
+                Array.Copy(buf, 0, packet, 4, size);
+                packet[(int)TransCHKSUM.SEQNO] = seqNo;
+                packet[(int)TransCHKSUM.TYPE] = 0; //Data 
+                checksum.calcChecksum(ref packet, packet.Length); //Calculate checksum
 
-			if (++errorCount == 3)
-            {
-                packet[1]++;
-                Console.WriteLine("Noise ! byte 1 is spoiled in the third transmission");
-            }
-
-            //Send data until ack received and correct seq number
-            link.send(packet, packet.Length);
-            Console.WriteLine("Data Sendt !" + packet.Length);
-            while (!receiveAck())
-            {
-                errorCount++;
-                Console.WriteLine("Sequential errors: " + errorCount);
-                if (errorCount > 5)
+                /*
+                if (++errorCount == 3)
                 {
-                    Console.WriteLine("Too many errors, aborting....");
+                    packet[1]++;
+                    Console.WriteLine("Noise ! byte 1 is spoiled in the third transmission");
+                    //reset values
                     errorCount = 0;
-                    return;
                 }
-                link.send(packet, packet.Length);
-            }
+                */
 
-            //reset values
-            //errorCount = 0;
+                //Send data until ack received and correct seq number
+                link.send(packet, packet.Length);
+
+			} while (!receiveAck());
+
+
         }
 
         /// <summary>
