@@ -103,14 +103,13 @@ namespace Transportlaget
             ackBuf[(int)TransCHKSUM.TYPE] = (byte)(int)TransType.ACK;
             checksum.calcChecksum(ref ackBuf, (int)TransSize.ACKSIZE);
             
-			//if(++errorCount==3){
-			//	ackBuf[1]++;
-			//	Console.WriteLine("Noise ! byte 1 is spoiled in the third Ack transmission");
-			//}
+			if(++errorCount==3){
+				ackBuf[1]++;
+				Console.WriteLine("Noise ! byte 1 is spoiled in the third Ack transmission");
+
+			}
             
-            link.send(ackBuf, (int)TransSize.ACKSIZE);
-
-
+            link.send(ackBuf, (int)TransSize.ACKSIZE);         
         }
 
         /// <summary>
@@ -122,33 +121,64 @@ namespace Transportlaget
         /// <param name='size'>
         /// Size.
         /// </param>
-        public void send(byte[] buf, int size)
+		public void send(byte[] buf, int size)
         {
-			do
-			{
-                    
+            do
+            {
+
                 byte[] packet = new byte[size + (int)TransSize.ACKSIZE]; //Save space for CS, ACK and type
                 Array.Copy(buf, 0, packet, 4, size);
                 packet[(int)TransCHKSUM.SEQNO] = seqNo;
                 packet[(int)TransCHKSUM.TYPE] = 0; //Data 
                 checksum.calcChecksum(ref packet, packet.Length); //Calculate checksum
 
-                /*
+
                 if (++errorCount == 3)
-                {
-                    packet[1]++;
-                    Console.WriteLine("Noise ! byte 1 is spoiled in the third transmission");
+                           {
+                               packet[1]++;
+                Console.WriteLine($"Noise ! byte 1 is spoiled every third transmission");
                     //reset values
                     errorCount = 0;
                 }
-                */
 
                 //Send data until ack received and correct seq number
                 link.send(packet, packet.Length);
 
-			} while (!receiveAck());
+            } while (!receiveAck());
+            //updates old_seqNo
+            old_seqNo = DEFAULT_SEQNO;
+
+        }
 
 
+		public int receive(ref byte[] buf)
+        {
+            buffer = new byte[buffer.Length];
+            int receivedSize = link.receive(ref buffer);
+            while (true)
+            {
+                if (!checksum.checkChecksum(buffer, receivedSize))
+                {
+                    sendAck(false);
+                    receivedSize = link.receive(ref buffer);
+                }
+                else if (old_seqNo != buffer[(int)TransCHKSUM.SEQNO])
+                {
+                    sendAck(true);
+                    old_seqNo = buffer[(int)TransCHKSUM.SEQNO];
+                    break;
+                }
+                else
+                {
+                    sendAck(true);
+                    receivedSize = link.receive(ref buffer);
+                }
+            }
+
+
+            //sendAck(true);
+            Array.Copy(buffer, 4, buf, 0, buf.Length);
+            return receivedSize;
         }
 
         /// <summary>
@@ -157,37 +187,80 @@ namespace Transportlaget
         /// <param name='buffer'>
         /// Buffer.
         /// </param>
-        public int receive(ref byte[] buf)
-        {
-            bool result = receiveAck();
+		//public int receive(ref byte[] buf)
+        //{
+   //         bool newDataRecieved = false;
+   //         int size = 0;
 
-            if (result & dataReceived)
-            {
-                //Data received
-                if (checksum.checkChecksum(buffer, recvSize)) //Validate data with checksum
-                {
-                    //Data correct
-                    sendAck(true);
-                    Array.Copy(buffer, 4, buf, 0, buf.Length);
-                    return buffer.Length - (int)TransSize.ACKSIZE;
-                }
-                //Checksum not valid - data corrupted
-                sendAck(false);
-                return -1;
-            }
-            else if (result & !dataReceived)
-            {
-                //ACK received
-                sendAck(false);
-                return -1;
-            }
-            else
-            {
-                //Error
-                sendAck(false);
-                return -1;
-            }
+            
+   //         do
+   //         {
+                
+   //             do
+   //             {
+   //                 size = link.receive(ref buffer);
+   //             } while (size == -1);
 
-        }
+   //             if (checksum.checkChecksum(buffer, size))
+   //             {
+
+                   
+   //                 if (old_seqNo != buffer[(int)TransCHKSUM.SEQNO])
+   //                 {
+   //                     sendAck(true);
+   //                     old_seqNo = buffer[(int)TransCHKSUM.SEQNO];
+			//			newDataRecieved = true;
+   //                 }
+
+   //                 else
+   //                 {
+   //                     sendAck(true);
+   //                 }
+   //             }
+   //             else
+   //             {
+   //                 sendAck(false);
+   //             }
+			//} while (!newDataRecieved);
+
+
+            ////change size, to not count the 4 first bytes. (should be 1000)
+
+            ////buffer copied into ref buf.
+
+            //Array.Copy(buffer, (int)TransSize.ACKSIZE, buf, 0, (size -= (int)TransSize.ACKSIZE));
+
+            //return size;
+
+
+			//bool result = receiveAck();
+
+        //    if (result & dataReceived)
+        //    {
+        //        //Data received
+        //        if (checksum.checkChecksum(buffer, recvSize)) //Validate data with checksum
+        //        {
+        //            //Data correct
+        //            sendAck(true);
+        //            Array.Copy(buffer, 4, buf, 0, buf.Length);
+        //            return buffer.Length - (int)TransSize.ACKSIZE;
+        //        }
+        //        //Checksum not valid - data corrupted
+        //        sendAck(false);
+        //        return -1;
+        //    }
+        //    else if (result & !dataReceived)
+        //    {
+        //        //ACK received
+        //        sendAck(false);
+        //        return -1;
+        //    }
+        //    else
+        //    {
+        //        //Error
+        //        sendAck(false);
+        //        return -1;
+        //    }
+        //}
     }
 }
