@@ -3,12 +3,12 @@
     <Files>
       <File FileName="file_server/file_server.cs" Line="89" Column="18" />
       <File FileName="Link/Link.cs" Line="146" Column="18" />
-      <File FileName="Transport/Transport.cs" Line="89" Column="25" />
-      <File FileName="file_client/file_client.cs" Line="46" Column="3" />
+      <File FileName="Transport/Transport.cs" Line="99" Column="10" />
+      <File FileName="file_client/file_client.cs" Line="72" Column="5" />
       <File FileName="Transport/TransConst.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release|x86" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

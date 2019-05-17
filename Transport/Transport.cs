@@ -133,13 +133,13 @@ namespace Transportlaget
                 checksum.calcChecksum(ref packet, packet.Length); //Calculate checksum
 
 
-                if (++errorCount == 3)
-                           {
-                               packet[1]++;
-                Console.WriteLine($"Noise ! byte 1 is spoiled every third transmission");
-                    //reset values
-                    errorCount = 0;
-                }
+                //if (++errorCount == 3)
+                //           {
+                //               packet[1]++;
+                //Console.WriteLine($"Noise ! byte 1 is spoiled every third transmission");
+                //    //reset values
+                //    errorCount = 0;
+                //}
 
                 //Send data until ack received and correct seq number
                 link.send(packet, packet.Length);
@@ -181,86 +181,6 @@ namespace Transportlaget
             return receivedSize;
         }
 
-        /// <summary>
-        /// Receive the specified buffer.
-        /// </summary>
-        /// <param name='buffer'>
-        /// Buffer.
-        /// </param>
-		//public int receive(ref byte[] buf)
-        //{
-   //         bool newDataRecieved = false;
-   //         int size = 0;
-
-            
-   //         do
-   //         {
-                
-   //             do
-   //             {
-   //                 size = link.receive(ref buffer);
-   //             } while (size == -1);
-
-   //             if (checksum.checkChecksum(buffer, size))
-   //             {
-
-                   
-   //                 if (old_seqNo != buffer[(int)TransCHKSUM.SEQNO])
-   //                 {
-   //                     sendAck(true);
-   //                     old_seqNo = buffer[(int)TransCHKSUM.SEQNO];
-			//			newDataRecieved = true;
-   //                 }
-
-   //                 else
-   //                 {
-   //                     sendAck(true);
-   //                 }
-   //             }
-   //             else
-   //             {
-   //                 sendAck(false);
-   //             }
-			//} while (!newDataRecieved);
-
-
-            ////change size, to not count the 4 first bytes. (should be 1000)
-
-            ////buffer copied into ref buf.
-
-            //Array.Copy(buffer, (int)TransSize.ACKSIZE, buf, 0, (size -= (int)TransSize.ACKSIZE));
-
-            //return size;
-
-
-			//bool result = receiveAck();
-
-        //    if (result & dataReceived)
-        //    {
-        //        //Data received
-        //        if (checksum.checkChecksum(buffer, recvSize)) //Validate data with checksum
-        //        {
-        //            //Data correct
-        //            sendAck(true);
-        //            Array.Copy(buffer, 4, buf, 0, buf.Length);
-        //            return buffer.Length - (int)TransSize.ACKSIZE;
-        //        }
-        //        //Checksum not valid - data corrupted
-        //        sendAck(false);
-        //        return -1;
-        //    }
-        //    else if (result & !dataReceived)
-        //    {
-        //        //ACK received
-        //        sendAck(false);
-        //        return -1;
-        //    }
-        //    else
-        //    {
-        //        //Error
-        //        sendAck(false);
-        //        return -1;
-        //    }
-        //}
+        
     }
 }
